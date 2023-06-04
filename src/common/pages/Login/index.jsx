@@ -1,16 +1,19 @@
 import {Button, Grid, TextField } from "@mui/material";
 import FormField from "../../components/Form";
+import {useState} from "react";
+import {handleLogin} from "../../../services/loginService.js";
 
 const Login = () => {
+    const [values,setValues]=useState({})
   return (
-    <FormField inputs={["nfads"]} />
-    // <Form inputs={[
-    //     {
-    //     label:"Email",
-    //     regEx: /.com/,
-    //     helperText: 'Invalid email',
-    //     }
-    // ]} />
+    <FormField values={values} setValues={setValues} onSubmit={()=>{
+        handleLogin({...values}).then((success)=>console.log(success));
+    }} inputs={[{
+      label:'email',
+      regEx:/.com/,
+      helperText: "Invalid email",
+
+    },{label:'password',regEx: /.{6,}/,helperText: "Invalid password"}]} />
     // <Grid container bgcolor={"red"}>
     //   <Grid item width={"100%"} height="inherit">
     //     <Grid
