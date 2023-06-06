@@ -4,7 +4,7 @@ import Form from "./common/components/Form";
 const routes = [
   {
     path: "/",
-    element: <Form />
+    element: <BookRoom />
   },
   {
     path:"/login",
