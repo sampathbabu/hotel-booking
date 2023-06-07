@@ -8,9 +8,12 @@ import BG from "./assets/bg.jpeg";
 import { useState } from "react";
 import {BrowserRouter, Route,Routes } from 'react-router-dom'
 import routes from './routes.jsx'
+import Store, { useStore } from "./store";
 function App() {
   const [date, setDate] = useState(new Date());
+  const createStore=useStore()
   return (
+    <Store.Provider value={createStore}>
     <BrowserRouter>
     <Grid
       minHeight={"100vh"}
@@ -51,6 +54,7 @@ function App() {
       </Grid>
     </Grid>
     </BrowserRouter>
+    </Store.Provider>
   );
   // return (
   //   <Box sx={{minWidth:'97.5vw',height:"100vh",padding:"0 1vw",border:'1px solid orange',position:'relative'}}>
@@ -64,6 +68,7 @@ function App() {
   //     <Box sx={{height:"8rem",position:"absolute",bottom:'0',width:"100%",backgroundColor:"red"}}></Box>
   //   </Box>
   // )
+  
 }
 
 export default App;

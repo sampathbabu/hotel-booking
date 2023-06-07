@@ -1,27 +1,24 @@
-import {Button, Grid, TextField} from "@mui/material";
+import { Button, Grid, TextField,Box } from "@mui/material";
 import propTypes from "prop-types";
-import {useEffect, useState} from "react";
-const FormField = ({ inputs,onSubmit,values,setValues }) => {
+import { useEffect, useState } from "react";
+const FormField = ({ inputs, onSubmit, values, setValues }) => {
   console.log(inputs);
-  useEffect(()=>{
-    setValues(()=>{
-      const temp= inputs.map((val)=>({[val.label]:""}));
-      return temp.reduce((acc,current)=>{
-        acc={...acc,...current};
+  useEffect(() => {
+    setValues(() => {
+      const temp = inputs.map((val) => ({ [val.label]: "" }));
+      return temp.reduce((acc, current) => {
+        acc = { ...acc, ...current };
         return acc;
-      }, {})
+      }, {});
       // console.log(temp)
       // console.log({...temp})
       // return {...temp};
-
-    })
-  },[])
-  console.log(values)
+    });
+  }, []);
+  console.log(values);
   const isValidValue = (regex, value) => {
-    console.log(regex);
-    console.log(value);
     const regExp = new RegExp(regex);
-    console.log(regExp.test(value))
+
     return regExp.test(value);
   };
   //   const temp = [
@@ -37,24 +34,40 @@ const FormField = ({ inputs,onSubmit,values,setValues }) => {
   return (
     <Grid container direction={"column"} rowGap={2}>
       {inputs.map((textField) => (
-        <TextField
-          key={textField.label}
-          error={values[textField.label]?.length>0&&!isValidValue(textField.regEx, values[textField.label]??"")}
-          helperText={
-              values[textField.label]?.length>0 &&!isValidValue(textField.regEx, values[textField.label]??"")
-              ? textField.helperText
-              : ""
-          }
-          onChange={(e) => {
-            setValues((prev) => ({
-              ...prev,
-              [textField.label]: e.target.value,
-            }));
-          }}
-          label={textField.label}
-        />
+        <Box key={textField.label} display="flex" alignItems={"center"}>
+          {textField.startIcon&& <textField.startIcon  />}
+          <TextField
+          sx={{ml:"0.2rem"}}
+            type={textField.type ?? "text"}
+            error={
+              values[textField.label]?.length > 0 &&
+              !isValidValue(textField.regEx, values[textField.label] ?? "")
+            }
+            helperText={
+              values[textField.label]?.length > 0 &&
+              !isValidValue(textField.regEx, values[textField.label] ?? "")
+                ? textField.helperText
+                : ""
+            }
+            onChange={(e) => {
+              setValues((prev) => ({
+                ...prev,
+                [textField.label]: e.target.value,
+              }));
+            }}
+            label={textField.label}
+          />
+        </Box>
       ))}
-      <Button variant={"contained"} fullWidth onClick={onSubmit}>Submit</Button>
+      <Button
+        sx={{ textTransform: "capitalize",my:"1rem" }}
+        variant={"contained"}
+        fullWidth
+        
+        onClick={onSubmit}
+      >
+        Submit
+      </Button>
     </Grid>
   );
 };

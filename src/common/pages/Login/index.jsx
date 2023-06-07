@@ -1,19 +1,38 @@
-import {Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import FormField from "../../components/Form";
-import {useState} from "react";
-import {handleLogin} from "../../../services/loginService.js";
+import { useContext, useState } from "react";
+import { handleLogin } from "../../../services/loginService.js";
+import Store from "../../../store";
+import { AlternateEmail, Key } from "@mui/icons-material";
 
 const Login = () => {
-    const [values,setValues]=useState({})
+  const [values, setValues] = useState({});
+  const { setStore } = useContext(Store);
   return (
-    <FormField values={values} setValues={setValues} onSubmit={()=>{
-        handleLogin({...values}).then((success)=>console.log(success));
-    }} inputs={[{
-      label:'email',
-      regEx:/.com/,
-      helperText: "Invalid email",
-
-    },{label:'password',regEx: /.{6,}/,helperText: "Invalid password"}]} />
+    <Box height={"inherit"} width="100%" display={"flex"} alignItems="center" justifyContent={"center"}>
+      <Box >
+    <FormField 
+      values={values}
+      setValues={setValues}
+      onSubmit={() => {
+        handleLogin({ ...values }).then((success) => {
+          setStore((prev) => ({ ...prev, "user":{ ...success.data} }));
+          localStorage.setItem("user",JSON.stringify({...success.data}));
+        });
+      }}
+      inputs={[
+        {
+          label: "email",
+          regEx: /.com/,
+          type:"text",
+          startIcon: AlternateEmail,
+          helperText: "Invalid email",
+        },
+        { label: "password", type:"password", startIcon: Key, regEx: /.{6,}/, helperText: "Invalid password" },
+      ]}
+    />
+    </Box>
+    </Box>
     // <Grid container bgcolor={"red"}>
     //   <Grid item width={"100%"} height="inherit">
     //     <Grid
