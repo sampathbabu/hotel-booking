@@ -22,6 +22,7 @@ const Register = () => {
         padding={"6vh"}
         flexDirection="column"
         bgcolor={"#c6f68d"}
+        marginY={"1rem"}
         alignItems={"center"}
         borderRadius={"25px"}
         boxShadow={"1px 1px 20px 5px grey"}

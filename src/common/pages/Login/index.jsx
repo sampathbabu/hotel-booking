@@ -23,6 +23,7 @@ const Login = () => {
         flexDirection="column"
         alignItems={"center"}
         // bgcolor={"#c6f68d"}
+        marginY={"1rem"}
         bgcolor="#FFEBEE"
         borderRadius={"25px"}
         boxShadow={"1px 1px 20px 5px grey"}
