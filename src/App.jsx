@@ -12,6 +12,9 @@ import Store, { useStore } from "./store";
 function App() {
   const [date, setDate] = useState(new Date());
   const createStore=useStore()
+  String.prototype.capitalize=()=>{
+    return this.substring(0).toUpperCase() + this.substring(1)
+  }
   return (
     <Store.Provider value={createStore}>
     <BrowserRouter>

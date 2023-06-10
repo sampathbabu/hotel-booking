@@ -19,7 +19,6 @@ const Header = () => {
       navigate("/");
     }
   }, [store]);
-
   const [showMenu, setShowMenu] = useState(false);
   return (
     <Grid
@@ -64,9 +63,10 @@ const Header = () => {
                   </Grid>
                 );
             })}
-            {Object.keys(store.user).length > 0 && (
+            {Object.keys(store.user??{}).length > 0 && (
               <Grid item paddingY={"1rem"} key="logout">
-                <NavigationTab text={"Logout"} link="/logout" />
+                {/* <NavigationTab text={"Logout"} link="/logout" /> */}
+                <NavigationTab text={`Hi ${store.user.firstName??""}!`} link="/logout" />
               </Grid>
             )}
           </Grid>
@@ -97,7 +97,8 @@ const Header = () => {
             })}
             {Object.keys(store.user ?? {}).length > 0 && (
               <Grid item key="logout">
-                <NavigationTab text={"Logout"} link="/logout" />
+                {/* <NavigationTab text={"Logout"} link="/logout" /> */}
+                <NavigationTab text={`Hi ${store.user.firstName??""}!`} link="/logout" />
               </Grid>
             )}
           </Box>

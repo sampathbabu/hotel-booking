@@ -23,6 +23,6 @@ export const handleLogin = async ({ email, password }) => {
   return postCall({ url: LOGIN_URL, payload: { email, password } });
 };
 
-export const handleRegister = ({ email, password, mobile }) => {
-  return postCall({ url: REGISTER_URL, payload: { email, password, mobile } });
+export const handleRegister = ({ email, password, mobile,firstName,lastName }) => {
+  return postCall({ url: REGISTER_URL, payload: { email, password, mobile,firstName,lastName } });
 };

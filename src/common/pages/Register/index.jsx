@@ -1,11 +1,11 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import FormField from "../../components/Form";
 import { useContext, useState } from "react";
-import { handleLogin } from "../../../services/loginService.js";
+import { handleLogin, handleRegister } from "../../../services/loginService.js";
 import Store from "../../../store";
-import { AlternateEmail, Key } from "@mui/icons-material";
+import { AccountCircle, AlternateEmail, Key, Phone } from "@mui/icons-material";
 
-const Login = () => {
+const Register = () => {
   const [values, setValues] = useState({});
   const { setStore } = useContext(Store);
   return (
@@ -21,21 +21,20 @@ const Login = () => {
         display={"flex"}
         padding={"6vh"}
         flexDirection="column"
+        bgcolor={"#c6f68d"}
         alignItems={"center"}
-        // bgcolor={"#c6f68d"}
-        bgcolor="#FFEBEE"
         borderRadius={"25px"}
         boxShadow={"1px 1px 20px 5px grey"}
       >
         <Box fontWeight={"bold"} fontSize={"20px"}>
-          Sign In
+          Register
         </Box>
-        <Box padding={"1vh"}>
+        <Box padding={"7vh"}>
           <FormField
             values={values}
             setValues={setValues}
             onSubmit={() => {
-              handleLogin({ ...values }).then((success) => {
+              handleRegister({ ...values }).then((success) => {
                 setStore((prev) => ({ ...prev, user: { ...success.data } }));
                 localStorage.setItem(
                   "user",
@@ -57,6 +56,27 @@ const Login = () => {
                 startIcon: Key,
                 regEx: /.{6,}/,
                 helperText: "Invalid password",
+              },
+              mobile: {
+                label: "Mobile",
+                type: "number",
+                startIcon: Phone,
+                regEx: /.{10}/,
+                helperText: "Invalid Mobile Number",
+              },
+              firstName: {
+                label: "First Name",
+                type: "text",
+                startIcon: AccountCircle,
+                regEx: /.{2,}/,
+                helperText: "Invalid First Name",
+              },
+              lastName: {
+                label: "Last Name",
+                type: "text",
+                startIcon: AccountCircle,
+                regEx: /.{2,}/,
+                helperText: "Invalid Last Name",
               },
             }}
           />
@@ -94,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
