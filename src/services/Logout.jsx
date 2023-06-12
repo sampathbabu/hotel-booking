@@ -1,12 +1,13 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Store from "../store";
+import { useRecoilState } from "recoil";
+import { userStore } from "../store";
 
 const Logout = () => {
-  const { setStore } = useContext(Store);
+  const [user,setUser]=useRecoilState(userStore);
   const navigate = useNavigate();
   useEffect(() => {
-    setStore((prev) => ({ ...prev, user: {} }));
+    setUser({})
     localStorage.removeItem("user");
     navigate("/");
   }, []);

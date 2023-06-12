@@ -2,8 +2,10 @@ import { Menu } from "@mui/icons-material";
 import { Box as MuiBox, Grid, IconButton, styled } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Store from "../../../store/index.jsx";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userStore } from "../../../store/index.jsx";
 import Logo from "../Logo/index.jsx";
+
 import NavigationTab from "../NavigationTab/index.jsx";
 import { navigationLinks } from "./constants";
 const Box = styled(MuiBox)(() => ({
@@ -11,14 +13,13 @@ const Box = styled(MuiBox)(() => ({
 }));
 
 const Header = () => {
-
-  const { store } = useContext(Store);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (Object.keys(store.user ?? {}).length > 0) {
-      navigate("/");
-    }
-  }, [store]);
+  const [user,setUser]=useRecoilState(userStore);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (Object.keys(store.user ?? {}).length > 0) {
+  //     navigate("/");
+  //   }
+  // }, [store]);
   const [showMenu, setShowMenu] = useState(false);
   return (
     <Grid
@@ -33,6 +34,8 @@ const Header = () => {
         component={Grid}
         alignItems={"center"}
         item
+        xs={1}
+        bgcolor="red"
         display={{ xs: "flex", md: "none" }}
       >
         <IconButton
@@ -56,27 +59,49 @@ const Header = () => {
             top={"8vh"}
           >
             {Object.keys(navigationLinks).map((name) => {
-              if (name.toLowerCase() != ("login" || "register"))
+              if (
+                !Object.keys(user ?? {}).length > 0 ||
+                !["register", "login"].includes(name.toLowerCase())
+              )
                 return (
                   <Grid item paddingY={"1rem"} key={name}>
                     <NavigationTab text={name} link={navigationLinks[name]} />
                   </Grid>
                 );
             })}
-            {Object.keys(store.user??{}).length > 0 && (
+            {Object.keys(user ?? {}).length > 0 && (
               <Grid item paddingY={"1rem"} key="logout">
                 {/* <NavigationTab text={"Logout"} link="/logout" /> */}
-                <NavigationTab text={`Hi ${store.user.firstName??""}!`} link="/logout" />
+                <NavigationTab
+                  text={`Hi ${user.firstName ?? "User"}!`}
+                  link="/logout"
+                />
               </Grid>
             )}
           </Grid>
         )}
       </Box>
 
-      <Grid item display={"flex"} justifyContent="center" xs={10} md={"auto"} height={"6vh"}>
+      <Grid
+        item
+        bgcolor={"orange"}
+        display={"flex"}
+        justifyContent="center"
+        xs={"11"}
+        md={"auto"}
+        height={"6vh"}
+      >
+        {/* <Box><img
+        src={LogoImage}
+        style={{ maxWidth: "100%", maxHeight: "100%" }}
+        alt={"imageLogo"}
+      /></Box> */}
+      
+        {/* <Box bgcolor={"pink"}> */}
         <Logo />
+        {/* </Box> */}
       </Grid>
-      <Grid item xs>
+      <Grid item className="tjstmdflex" xs display={{ xs: "none", md: "flex" }}>
         <Grid
           container
           height={"100%"}
@@ -86,7 +111,7 @@ const Header = () => {
           <Box component={Grid} item display={{ xs: "none", md: "flex" }}>
             {Object.keys(navigationLinks).map((name) => {
               if (
-                !Object.keys(store.user ?? {}).length > 0 ||
+                !Object.keys(user ?? {}).length > 0 ||
                 !["register", "login"].includes(name.toLowerCase())
               )
                 return (
@@ -95,10 +120,13 @@ const Header = () => {
                   </Grid>
                 );
             })}
-            {Object.keys(store.user ?? {}).length > 0 && (
+            {Object.keys(user ?? {}).length > 0 && (
               <Grid item key="logout">
                 {/* <NavigationTab text={"Logout"} link="/logout" /> */}
-                <NavigationTab text={`Hi ${store.user.firstName??""}!`} link="/logout" />
+                <NavigationTab
+                  text={`Hi ${user.firstName ?? ""}!`}
+                  link="/logout"
+                />
               </Grid>
             )}
           </Box>

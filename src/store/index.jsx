@@ -1,15 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { atom } from "recoil";
 
-const Store = createContext({});
-
-export default Store;
-
-export const useStore = () => {
-  const [store, setStore] = useState({});
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      setStore({ user: JSON.parse(localStorage.getItem("user") )});
-    }
-  }, []);
-  return { store, setStore };
-};
+export const userStore = atom({
+  key: "user",
+  default: JSON.parse(localStorage.getItem("user"))??{}
+});

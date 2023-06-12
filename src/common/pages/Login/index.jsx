@@ -1,13 +1,17 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import FormField from "../../components/Form";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { handleLogin } from "../../../services/loginService.js";
-import Store from "../../../store";
+import  { userStore } from "../../../store";
 import { AlternateEmail, Key } from "@mui/icons-material";
-
+import Loader from "../../components/Loader";
+import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [values, setValues] = useState({});
-  const { setStore } = useContext(Store);
+  const [loader,setLoader]=useState(false);
+  const [user,setUser]=useRecoilState(userStore)
+  const navigate=useNavigate()
   return (
     <Box
       height={"inherit"}
@@ -28,6 +32,7 @@ const Login = () => {
         borderRadius={"25px"}
         boxShadow={"1px 1px 20px 5px grey"}
       >
+        <Loader isShown={loader} />
         <Box fontWeight={"bold"} fontSize={"20px"}>
           Sign In
         </Box>
@@ -36,12 +41,16 @@ const Login = () => {
             values={values}
             setValues={setValues}
             onSubmit={() => {
+              setLoader(true)
               handleLogin({ ...values }).then((success) => {
-                setStore((prev) => ({ ...prev, user: { ...success.data } }));
+                // setStore((prev) => ({ ...prev, user: { ...success.data } }));
+                setUser({...success.data});
+                setLoader(false);
                 localStorage.setItem(
                   "user",
                   JSON.stringify({ ...success.data })
                 );
+                navigate("/")
               });
             }}
             inputs={{
@@ -64,34 +73,6 @@ const Login = () => {
         </Box>
       </Box>
     </Box>
-    // <Grid container bgcolor={"red"}>
-    //   <Grid item width={"100%"} height="inherit">
-    //     <Grid
-    //       container
-    //       rowGap={2}
-    //       direction="column"
-    //       justifyContent="center"
-    //       alignItems={"center"}
-    //       bgcolor={"orange"}
-    //       height
-    //     >
-    //       <Grid item>
-    //         <TextField label="Email"></TextField>
-    //       </Grid>
-    //       <Grid item>
-    //         <TextField label="Password" type={"password"} />
-    //       </Grid>
-    //       <Grid item>
-    //         <TextField label="Mobile" />
-    //       </Grid>
-    //       <Grid item>
-    //         <Button fullWidth variant="contained">
-    //           Submit
-    //         </Button>
-    //       </Grid>
-    //     </Grid>
-    //   </Grid>
-    // </Grid>
   );
 };
 
