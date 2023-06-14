@@ -1,11 +1,17 @@
-import { Grid, TextField, Button } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  Button,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { Calendar } from "react-multi-date-picker";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 const Temp = () => {
+  const theme = useTheme();
+  const matchSmallDevice = useMediaQuery(theme.breakpoints.up("sm"));
   const da = new Date();
   console.log(`${da.getDate()}/${da.getMonth() + 1}/${da.getFullYear()}`);
-  const [temp1, setTemp1] = useState("");
-  const [temp2, setTemp2] = useState("");
   const [dates, setDates] = useState({
     checkIn: "",
     checkOut: "",
@@ -15,7 +21,6 @@ const Temp = () => {
   useEffect(() => {
     console.log(dates);
   }, [dates]);
-  //   temp2.setDate(temp2.getDate() + 30);
   return (
     <Grid
       onClick={(e) => {
@@ -33,20 +38,23 @@ const Temp = () => {
         onClick={(e) => {
           e.stopPropagation();
           setShowCalender(true);
-          // e.preventDefault()
-          // e.stopPropagation()
         }}
         item
         marginBottom={"1rem"}
       >
-        <Grid columnGap={2} container alignItems={"center"}>
-          <Grid item height={"fit-content"}>
+        <Grid
+          columnGap={2}
+          container
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Grid item xs={12}>{`Todo: DateValidation, Room cards (Design to finalize)`}</Grid>
+
+          <Grid xs={"12"} md={"auto"} item marginY={"0.5rem"} height={"fit-content"}>
             <TextField
+            fullWidth
               autoComplete="off"
               value={dates.checkIn}
-              onFocus={(e) => {
-                setShowCalender(true);
-              }}
               InputProps={{
                 style: {
                   height: "3rem",
@@ -56,8 +64,9 @@ const Temp = () => {
               label="Check-In"
             />
           </Grid>
-          <Grid item height={"fit-content"}>
+          <Grid xs={"12"} md={"auto"} item marginY="0.5rem" height={"fit-content"}>
             <TextField
+            fullWidth
               autoComplete="off"
               value={dates.checkOut}
               InputProps={{
@@ -70,8 +79,9 @@ const Temp = () => {
               label="Check-Out"
             />
           </Grid>
-          <Grid item height={"fit-content"}>
+          <Grid item xs={12} md={"auto"} height={"fit-content"}>
             <Button
+              fullWidth
               onClick={(e) => {
                 e.stopPropagation();
               }}
@@ -83,14 +93,17 @@ const Temp = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid onClick={(e)=>{
-        e.stopPropagation()
-      }} display={showCalendar ? "flex" : "none"} item>
-        {" "}
-        <Calendar
+      <Grid
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        display={showCalendar ? "flex" : "none"}
+        item
+      >
+        <Calendar 
           ref={ref}
           minDate={new Date()}
-          numberOfMonths={2}
+          numberOfMonths={matchSmallDevice ? 2 : 1}
           range
           rangeHover
           onChange={(datesOnChange) => {
@@ -109,6 +122,7 @@ const Temp = () => {
           }}
         />
       </Grid>
+      {/* <Grid item width={"100%"}><RoomCard /></Grid> */}
     </Grid>
   );
 };
