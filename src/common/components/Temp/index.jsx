@@ -56,9 +56,11 @@ const Temp = () => {
           item
           marginBottom={"1rem"}
           sx={{
-            background: "white",
+            opacity:"0.8",
+            background:"white",
+            marginX:"1rem",
             padding: matchSmallDevice?"3% 7%":"5vh 7%",
-            borderRadius: "25px",
+            borderRadius: "10px",
             boxShadow: "2px -2px 20px 2px grey",
           }}
         >
