@@ -12,15 +12,13 @@ const Box = styled(MuiBox)(() => ({
   padding: "0",
 }));
 
-const Header = () => {
-  const [user,setUser]=useRecoilState(userStore);
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (Object.keys(store.user ?? {}).length > 0) {
-  //     navigate("/");
-  //   }
-  // }, [store]);
+const Header = ({showHeaderMenu,setHeaderMenu}) => {
+  const [user, setUser] = useRecoilState(userStore);
   const [showMenu, setShowMenu] = useState(false);
+  useEffect(()=>{
+    console.log(showHeaderMenu);
+    console.log(showMenu);
+  },[showHeaderMenu])
   return (
     <Grid
       container
@@ -41,6 +39,7 @@ const Header = () => {
         <IconButton
           onClick={() => {
             setShowMenu((prev) => !prev);
+            setHeaderMenu(true)
           }}
           sx={{ color: "white" }}
         >
@@ -51,12 +50,14 @@ const Header = () => {
             container
             zIndex={100}
             bgcolor="white"
-            width={"fit-content"}
+            width={"60%"}
             paddingX={0}
             sx={{ color: "black" }}
             direction={"column"}
-            position="absolute"
+            position="fixed"
             top={"8vh"}
+            left="0"
+            height="100%"
           >
             {Object.keys(navigationLinks).map((name) => {
               if (
@@ -96,7 +97,7 @@ const Header = () => {
         style={{ maxWidth: "100%", maxHeight: "100%" }}
         alt={"imageLogo"}
       /></Box> */}
-      
+
         {/* <Box bgcolor={"pink"}> */}
         <Logo />
         {/* </Box> */}

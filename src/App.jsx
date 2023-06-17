@@ -7,7 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import routes from "./routes.jsx";
 import { RecoilRoot } from "recoil";
 function App() {
-  const [date, setDate] = useState(new Date());
+  const [showHeaderMenu, setHeaderMenu] = useState(false);
   String.prototype.capitalize = () => {
     return this.substring(0).toUpperCase() + this.substring(1);
   };
@@ -20,16 +20,20 @@ function App() {
             boxSizing="border-box"
             container
             direction={"column"}
+            onClick={(e)=>{
+              console.log("IN ROOT click!!");
+              setHeaderMenu(false)
+            }}
           >
             <Grid item height="fit-content">
-              <Header />
+              <Header setHeaderMenu={setHeaderMenu} showHeaderMenu={showHeaderMenu} />
             </Grid>
             <Grid
               item
               flexGrow={7}
               display="flex"
               minHeight={"max-content"}
-              paddingX={"0.2rem"}
+              paddingX={"0rem"}
               sx={{ color: "black", background: { BG } }}
             >
               <Routes>
