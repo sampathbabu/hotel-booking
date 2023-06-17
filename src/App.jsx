@@ -1,5 +1,5 @@
 import "./App.css";
-import { Box, Grid } from "@mui/material";
+import { Box, createTheme, Grid, ThemeProvider } from "@mui/material";
 import Header from "./common/components/Header/index.jsx";
 import BG from "./assets/bg.jpeg";
 import { useState } from "react";
@@ -11,7 +11,13 @@ function App() {
   String.prototype.capitalize = () => {
     return this.substring(0).toUpperCase() + this.substring(1);
   };
+  const theme=createTheme({
+    palette:{
+      mode:"light"
+    }
+  })
   return (
+    <ThemeProvider theme={theme}>
     <RecoilRoot>
         <BrowserRouter>
           <Grid
@@ -68,6 +74,7 @@ function App() {
           </Grid>
         </BrowserRouter>
     </RecoilRoot>
+    </ThemeProvider>
   );
   // return (
   //   <Box sx={{minWidth:'97.5vw',height:"100vh",padding:"0 1vw",border:'1px solid orange',position:'relative'}}>

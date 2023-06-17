@@ -20,7 +20,7 @@ const Header = ({showHeaderMenu,setHeaderMenu}) => {
     console.log(showMenu);
   },[showHeaderMenu])
   return (
-    <Grid
+    <Grid color={"white"}
       container
       width={"100%"}
       paddingY={"0.5rem"}
