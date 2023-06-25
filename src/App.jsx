@@ -11,28 +11,33 @@ function App() {
   String.prototype.capitalize = () => {
     return this.substring(0).toUpperCase() + this.substring(1);
   };
-  const theme=createTheme({
-    palette:{
-      mode:"light"
-    }
-  })
+  const theme = createTheme({
+    palette: {
+      mode: "light",
+    },
+  });
   return (
     <ThemeProvider theme={theme}>
-    <RecoilRoot>
+      <RecoilRoot>
         <BrowserRouter>
           <Grid
             minHeight={"100vh"}
-            minWidth={"100vw"}
+            overflow="hidden"
+            width={"100vw"}
+            maxWidth={"100vw"}
             boxSizing="border-box"
             container
-            direction={"column"}
-            onClick={(e)=>{
+            flexDirection={"column"}
+            onClick={(e) => {
               console.log("IN ROOT click!!");
-              setHeaderMenu(false)
+              setHeaderMenu(false);
             }}
           >
-            <Grid item height="fit-content">
-              <Header setHeaderMenu={setHeaderMenu} showHeaderMenu={showHeaderMenu} />
+            <Grid item width={"100%"} height="fit-content">
+              <Header
+                setHeaderMenu={setHeaderMenu}
+                showHeaderMenu={showHeaderMenu}
+              />
             </Grid>
             <Grid
               item
@@ -59,7 +64,7 @@ function App() {
               position={"static"}
               bottom="0"
               display={"flex"}
-              justifyContent="center"   //Temp Properties till we get footer
+              justifyContent="center" //Temp Properties till we get footer
               alignItems={"center"}
               paddingX={"0.2rem"}
               width={"100%"}
@@ -73,7 +78,7 @@ function App() {
             </Grid>
           </Grid>
         </BrowserRouter>
-    </RecoilRoot>
+      </RecoilRoot>
     </ThemeProvider>
   );
   // return (

@@ -127,6 +127,7 @@ const Temp = () => {
             <Grid item xs={12} md={"auto"} height={"fit-content"}>
               <Button
                 fullWidth
+
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowCalender(false);
@@ -149,7 +150,7 @@ const Temp = () => {
                   });
                 }}
                 variant="contained"
-                sx={{ textTransform: "capitalize" }}
+                sx={{ textTransform: "capitalize",opacity:"1" }}
               >
                 Find Room
               </Button>
