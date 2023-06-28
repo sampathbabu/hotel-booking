@@ -10,6 +10,14 @@ import RoomDetails from "./common/components/RoomDetails";
 const routes = [
   {
     path: "/",
+    element: <Temp />
+  },
+  {
+    path: "/find-room",
+    element: <ImageCarousel />
+  },
+  {
+    path: "/book",
     element: <RoomDetails />
   },
   {

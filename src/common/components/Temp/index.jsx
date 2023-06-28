@@ -10,9 +10,12 @@ import { Calendar } from "react-multi-date-picker";
 import BG from "../../../assets/bg1-hotel.jpeg";
 import { useEffect, useRef, useState } from "react";
 import { RoomsJSON } from "../../constants";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { roomSelect } from "../../../store";
 const Temp = () => {
   const theme = useTheme();
   const matchSmallDevice = useMediaQuery(theme.breakpoints.up("sm"));
+  const [roomDetails, setRoomDetails] = useRecoilState(roomSelect);
   const da = new Date();
   console.log(`${da.getDate()}/${da.getMonth() + 1}/${da.getFullYear()}`);
   const [dates, setDates] = useState({
@@ -23,6 +26,7 @@ const Temp = () => {
   const ref = useRef();
   useEffect(() => {
     console.log(dates);
+    setRoomDetails({ ...dates });
   }, [dates]);
   console.log(new URL(BG, import.meta.url));
   const imageURL = new URL(BG, import.meta.url).href;
@@ -56,10 +60,10 @@ const Temp = () => {
           item
           marginBottom={"1rem"}
           sx={{
-            opacity:"0.8",
-            background:"white",
-            marginX:"1rem",
-            padding: matchSmallDevice?"3% 7%":"5vh 7%",
+            opacity: "0.8",
+            background: "white",
+            marginX: "1rem",
+            padding: matchSmallDevice ? "3% 7%" : "5vh 7%",
             borderRadius: "10px",
             boxShadow: "2px -2px 20px 2px grey",
           }}
@@ -127,13 +131,12 @@ const Temp = () => {
             <Grid item xs={12} md={"auto"} height={"fit-content"}>
               <Button
                 fullWidth
-
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowCalender(false);
 
                   const startDateFormal = new Date(
-                    dates.checkIn.split('-').reverse().join("-")
+                    dates.checkIn.split("-").reverse().join("-")
                   );
                   const endDateFormal = new Date(
                     [...dates.checkOut].reverse().join("")
@@ -141,7 +144,7 @@ const Temp = () => {
                   Object.keys(RoomsJSON).forEach((eachRoom) => {
                     const roomStatus = RoomsJSON[eachRoom];
                     const availableDate = new Date(roomStatus.availableDate);
-                    console.log(startDateFormal,availableDate);
+                    console.log(startDateFormal, availableDate);
                     console.log(
                       startDateFormal.getTime(),
                       availableDate.getTime(),
@@ -150,7 +153,7 @@ const Temp = () => {
                   });
                 }}
                 variant="contained"
-                sx={{ textTransform: "capitalize",opacity:"1" }}
+                sx={{ textTransform: "capitalize", opacity: "1" }}
               >
                 Find Room
               </Button>

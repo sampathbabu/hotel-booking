@@ -78,7 +78,7 @@ const ImageCarousel = () => {
     //     </Grid>
     //   </Grid>
     // </div>
-    <div style={{width:"100%",display:"flex"}}>
+    <div style={{display:"flex"}}>
       <ScrollMenu Header={"1BHK rooms"} RightArrow={<IconButton><ArrowRight /></IconButton>}>
         {Array.from(Array(12).keys()).map((item,ind) => {
           return <RoomCard itemId={ind} key={item.price} data={{ ...item }} />;
