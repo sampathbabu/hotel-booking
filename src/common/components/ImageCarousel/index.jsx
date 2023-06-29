@@ -6,10 +6,12 @@ import Carousel from "react-material-ui-carousel";
 import RoomCard from "../RoomCard";
 import { ArrowRight, ArrowRightOutlined } from "@mui/icons-material";
 import * as Menu from "react-horizontal-scrolling-menu"
+import { useNavigate } from "react-router-dom";
 // import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 const ImageCarousel = () => {
   console.log(Menu);
   const {ScrollMenu}=Menu
+  const navigate=useNavigate();
   const imageURL = new URL(RoomPic, import.meta.url).href;
   const imageURL2 = new URL(RoomPic2, import.meta.url).href;
   const imageList = [imageURL, imageURL2];
@@ -78,13 +80,20 @@ const ImageCarousel = () => {
     //     </Grid>
     //   </Grid>
     // </div>
-    <div style={{display:"flex"}}>
-      <ScrollMenu Header={"1BHK rooms"} RightArrow={<IconButton><ArrowRight /></IconButton>}>
+    // <div style={{display:"flex"}}>
+    <div style={{width:'100%'}}>
+      <ScrollMenu>
+      {Array.from(Array(12).keys()).map((item,ind) => {
+          return <RoomCard onAction={()=>navigate("/book")} itemId={ind} key={item.price} data={{ ...item }} />;
+        })} {/* .........Dynamic Id to implement........ */}
+      </ScrollMenu>
+      {/* <ScrollMenu Header={"1BHK rooms"} RightArrow={<IconButton><ArrowRight /></IconButton>}>
         {Array.from(Array(12).keys()).map((item,ind) => {
           return <RoomCard itemId={ind} key={item.price} data={{ ...item }} />;
         })}
-      </ScrollMenu>
-    </div>
+      </ScrollMenu> */}
+      </div>
+    // </div>
   );
 };
 

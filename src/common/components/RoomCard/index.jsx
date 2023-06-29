@@ -12,7 +12,7 @@ import RoomPic2 from "../../../assets/room2.jpeg";
   }
  */
 
-const RoomCard = ({data}) => {
+const RoomCard = ({onAction, data}) => {
   const imageURL = new URL(RoomPic, import.meta.url).href;
   const imageURL2 = new URL(RoomPic2, import.meta.url).href;
   const images = [imageURL, imageURL2];
@@ -62,6 +62,7 @@ const RoomCard = ({data}) => {
         sx={{
           padding: "1rem 10px",
           width: "200px",
+          // width:"fit-content",
           boxShadow: "3px 3px 1rem 2px grey",
           borderRadius: "15px",
           height: "fit-content",
@@ -102,6 +103,9 @@ const RoomCard = ({data}) => {
         </Grid>
         <Grid item marginTop={"0.5rem"}>
           <Button
+          onClick={()=>{
+            onAction()
+          }}
             fullWidth
             variant="contained"
             sx={{ textTransform: "capitalize" }}

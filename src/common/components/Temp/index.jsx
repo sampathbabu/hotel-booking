@@ -12,8 +12,10 @@ import { useEffect, useRef, useState } from "react";
 import { RoomsJSON } from "../../constants";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { roomSelect } from "../../../store";
+import { useNavigate } from "react-router-dom";
 const Temp = () => {
   const theme = useTheme();
+  const navigate=useNavigate()
   const matchSmallDevice = useMediaQuery(theme.breakpoints.up("sm"));
   const [roomDetails, setRoomDetails] = useRecoilState(roomSelect);
   const da = new Date();
@@ -151,6 +153,9 @@ const Temp = () => {
                       startDateFormal.getTime() > availableDate.getTime()
                     );
                   });
+                  if(dates.checkIn.length>0 && dates.checkOut.length>0){
+                    navigate("/find-room")
+                  }
                 }}
                 variant="contained"
                 sx={{ textTransform: "capitalize", opacity: "1" }}
