@@ -4,10 +4,24 @@ import Form from "./common/components/Form";
 import Logout from "./services/Logout";
 import Register from "./common/pages/Register";
 import Temp from "./common/components/Temp";
+import RoomCard from "./common/components/RoomCard";
+import ImageCarousel from "./common/components/ImageCarousel";
+import RoomDetails from "./common/components/RoomDetails";
+import Temp2 from "./common/components/Temp2";
+import RoomList from "./common/pages/Rooms";
 const routes = [
   {
     path: "/",
     element: <Temp />
+    // element: <Temp2 />
+  },
+  {
+    path: "/find-room",
+    element: <RoomList />
+  },
+  {
+    path: "/book",
+    element: <RoomDetails />
   },
   {
     path:"/login",
