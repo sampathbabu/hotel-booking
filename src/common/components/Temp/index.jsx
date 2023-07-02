@@ -15,7 +15,7 @@ import { roomSelect } from "../../../store";
 import { useNavigate } from "react-router-dom";
 const Temp = () => {
   const theme = useTheme();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const matchSmallDevice = useMediaQuery(theme.breakpoints.up("sm"));
   const [roomDetails, setRoomDetails] = useRecoilState(roomSelect);
   const da = new Date();
@@ -26,10 +26,6 @@ const Temp = () => {
   });
   const [showCalendar, setShowCalender] = useState(false);
   const ref = useRef();
-  useEffect(() => {
-    console.log(dates);
-    setRoomDetails({ ...dates });
-  }, [dates]);
   console.log(new URL(BG, import.meta.url));
   const imageURL = new URL(BG, import.meta.url).href;
   console.log(imageURL);
@@ -136,28 +132,34 @@ const Temp = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowCalender(false);
+                  const supportedFormatStartTime = dates.checkIn
+                    .split("-")
+                    .reverse()
+                    .join("-");
+                  const supportedFormatEndTime = dates.checkOut
+                    .split("-")
+                    .reverse()
+                    .join("-");
+                  const startDateFormal = new Date(supportedFormatStartTime);
+                  const endDateFormal = new Date(supportedFormatEndTime);
+                  console.log(
+                    "Supported Times: ",
+                    supportedFormatStartTime,
+                    supportedFormatEndTime
+                  );
+                  console.log(startDateFormal, endDateFormal);
+                  setRoomDetails((prev)=>({
+                    ...prev,
+                    checkIn: supportedFormatStartTime,
+                    checkOut: supportedFormatEndTime,
 
-                  const startDateFormal = new Date(
-                    dates.checkIn.split("-").reverse().join("-")
-                  );
-                  const endDateFormal = new Date(
-                    [...dates.checkOut].reverse().join("")
-                  );
-                  Object.keys(RoomsJSON).forEach((eachRoom) => {
-                    const roomStatus = RoomsJSON[eachRoom];
-                    const availableDate = new Date(roomStatus.availableDate);
-                    console.log(startDateFormal, availableDate);
-                    console.log(
-                      startDateFormal.getTime(),
-                      availableDate.getTime(),
-                      startDateFormal.getTime() > availableDate.getTime()
-                    );
-                  });
-                  if(dates.checkIn.length>0 && dates.checkOut.length>0){
+                  }));
+                  if (dates.checkIn.length > 0 && dates.checkOut.length > 0) {
                     navigate("/find-room")
                   }
                 }}
                 variant="contained"
+                disabled={!(dates.checkIn.length>0 && dates.checkOut.length>0)}
                 sx={{ textTransform: "capitalize", opacity: "1" }}
               >
                 Find Room

@@ -8,7 +8,7 @@ const IncrementButton = ({
 }) => {
   return (
     <div style={{display:"flex",alignItems:"center"}}>
-      <Button disabled={(currentIndex<=minIndex)}
+      <Button sx={{width: "fit-content"}} disabled={(currentIndex<=minIndex)}
         onClick={() => {
         setCurrentIndex((prev) => prev - 1);
         }}

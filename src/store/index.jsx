@@ -9,3 +9,8 @@ export const roomSelect = atom({
   key: "roomDetails",
   default: JSON.parse(localStorage.getItem("rooms-selected")) ?? {},
 });
+
+export const config=atom({
+  key: "config",
+  default: {}
+})

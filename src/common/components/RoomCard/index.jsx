@@ -63,7 +63,7 @@ const RoomCard = ({onAction, data}) => {
           padding: "1rem 10px",
           width: "200px",
           // width:"fit-content",
-          boxShadow: "3px 3px 1rem 2px grey",
+          boxShadow: "1px 1px 0.5rem 1px grey",
           borderRadius: "15px",
           height: "fit-content",
         }}
@@ -95,7 +95,7 @@ const RoomCard = ({onAction, data}) => {
         <Grid
           item
         >
-          <Typography fontWeight={"bold"}>₹1655</Typography>
+          <Typography fontWeight={"bold"}>{`₹${data['price']}`}</Typography>
 
           <Typography variant="subtitle1" fontSize={"11px"} marginLeft="5px">
             /per night

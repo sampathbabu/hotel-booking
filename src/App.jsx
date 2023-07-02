@@ -5,9 +5,12 @@ import BG from "./assets/bg.jpeg";
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import routes from "./routes.jsx";
-import { RecoilRoot } from "recoil";
+import Loader from "./common/components/Loader";
+import { useRecoilValue } from "recoil";
+import { config } from "./store";
 function App() {
   const [showHeaderMenu, setHeaderMenu] = useState(false);
+  const configValue=useRecoilValue(config)
   String.prototype.capitalize = () => {
     return this.substring(0).toUpperCase() + this.substring(1);
   };
@@ -18,11 +21,12 @@ function App() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <RecoilRoot>
+      
         <BrowserRouter>
+        <Loader isShown={configValue['loading']} />
           <Grid
             minHeight={"100vh"}
-            overflow="hidden"
+            // overflow="hidden"
             width={"100vw"}
             maxWidth={"100vw"}
             boxSizing="border-box"
@@ -78,7 +82,6 @@ function App() {
             </Grid>
           </Grid>
         </BrowserRouter>
-      </RecoilRoot>
     </ThemeProvider>
   );
   // return (
