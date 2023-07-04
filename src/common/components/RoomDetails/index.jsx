@@ -42,12 +42,9 @@ const RoomDetails = () => {
           name: "Hotel Booking.",
           description: "Test Transaction room",
           order_id: id,
-          handler: async function (response) {
+          handler: async function (responseRazorPay) {
             const data = {
-              orderCreationId: id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpaySignature: response.razorpay_signature,
+             response: responseRazorPay
             };
             const verifyAPI="https://hotel-booking-api-they.onrender.com/api/v1/payment/order/verify";
             postCall(verifyAPI, data);
