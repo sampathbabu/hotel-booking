@@ -10,8 +10,9 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { roomSelect } from "../../../store";
 import { Typography } from "@mui/material";
+import NewComponent from "../NewComponent";
 // import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
-const ImageCarousel = ({description, roomList}) => {
+const ImageCarousel = ({ description, roomList }) => {
   console.log(Menu);
   const { ScrollMenu } = Menu;
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const ImageCarousel = ({description, roomList}) => {
     //     return false;
     //   })
     // );
-    setFilteredRooms(roomList)
+    setFilteredRooms(roomList);
   }, []);
   const data = [
     {
@@ -106,18 +107,26 @@ const ImageCarousel = ({description, roomList}) => {
     //     </Grid>
     //   </Grid>
     // </div>
-    <div style={{display:"block",flexDirection:"column"}}>
-    <Typography marginLeft={"1rem"}>{description}</Typography>
-    <div style={{margin:"0rem 1rem", padding:"1rem 1rem", width: "100vw",height:"fit-content", overflowX: "auto" }}>
-      <div
+    <div style={{ display: "block", flexDirection: "column" }}>
+      <Typography marginLeft={"1rem"}>{description}</Typography>
+      {/* <div
+        style={{
+          margin: "0rem 1rem",
+          padding: "1rem 1rem",
+          width: "100vw",
+          height: "fit-content",
+          overflowX: "auto",
+        }}
+      > */}
+        {/* <div
         id="scroller"
         style={{ display: "inline-flex", whiteSpace: "nowrap" }}
-      >
+      > */}
         {Object.keys(filteredRooms).map((roomNumber, index) => {
           console.log(roomNumber);
           return (
-            <div key={roomNumber.price} style={{ marginRight: "2rem" }}>
-              <RoomCard
+            <div key={roomNumber.price} style={{margin:"1rem 0"}}>
+              {/* <RoomCard
                 onAction={() => {
                   setRoomDetails((prev) => ({
                     ...prev,
@@ -127,12 +136,21 @@ const ImageCarousel = ({description, roomList}) => {
                 }}
                 itemId={index}
                 data={{ ...roomList[roomNumber] }}
+              /> */}
+              <NewComponent
+                onAction={() => {
+                  setRoomDetails((prev) => ({
+                    ...prev,
+                    selectedRoom: roomList[roomNumber],
+                  }));
+                  navigate("/book");
+                }}
               />
             </div>
           );
         })}
-      </div>
-    </div>
+        {/* </div> */}
+      {/* </div> */}
     </div>
     // <div style={{display:"flex"}}>
     // <ScrollMenu>

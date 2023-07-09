@@ -56,14 +56,14 @@ const FormField = ({ inputs, onSubmit, values, setValues }) => {
     setDisabled(isValidFields() ? false : true);
   }, [errors]);
   return (
-    <Grid container direction={"column"} rowGap={2}>
+    <Grid pt={2} container direction={"column"} rowGap={2}>
       {Object.keys(inputs).map((label) => {
         const textField = inputs[label];
         return (
           <Box key={label} display="flex" alignItems={"center"}>
             {textField.startIcon && <textField.startIcon />}
 
-            <TextField
+            <TextField fullWidth
               inputProps={{
                 style: {
                   height: "1rem",

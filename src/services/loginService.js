@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { LOGIN_URL, REGISTER_URL } from "../apiurls";
 import { config } from "../store";
+import { CONFIG } from "../store/store.constant";
 const postCall = async ({ url, payload, headers }) => {
   return axios
     .post(
@@ -41,10 +42,15 @@ export const handleRegister = ({
 export const usePostCall = () => {
   const setConfig = useSetRecoilState(config);
   const handlePostCall = async(src, data, config) => {
-    setConfig((prev) => ({ ...prev, loading: true }));
-    const response= await axios.post(src, data, config)
-    setConfig((prev)=>({...prev, loading: false}))
-    return response;
+    setConfig((prev) => ({ ...prev, [CONFIG.LOADING]: true }));
+    try{
+      const response= await axios.post(src, data, config)
+      setConfig((prev)=>({...prev, [CONFIG.LOADING]: false}))
+      return response;
+    }catch{
+      setConfig((prev)=>({...prev, [CONFIG.LOADING]: false}))
+    }
+    
   };
   return handlePostCall;
 };
