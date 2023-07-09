@@ -2,15 +2,17 @@ import "./App.css";
 import { Box, createTheme, Grid, ThemeProvider } from "@mui/material";
 import Header from "./common/components/Header/index.jsx";
 import BG from "./assets/bg.jpeg";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import routes from "./routes.jsx";
 import Loader from "./common/components/Loader";
 import { useRecoilValue } from "recoil";
-import { config } from "./store";
+import { config, userStore } from "./store";
+import { CONFIG } from "./store/store.constant";
 function App() {
   const [showHeaderMenu, setHeaderMenu] = useState(false);
   const configValue=useRecoilValue(config)
+  const uservalue=useRecoilValue(userStore)
   String.prototype.capitalize = () => {
     return this.substring(0).toUpperCase() + this.substring(1);
   };
@@ -19,18 +21,22 @@ function App() {
       mode: "light",
     },
   });
+  useEffect(()=>{
+    console.log("App.jsx >>>> >>>>>>",uservalue);
+  },[uservalue])
   return (
     <ThemeProvider theme={theme}>
       
         <BrowserRouter>
-        <Loader isShown={configValue['loading']} />
+        <Loader isShown={configValue[CONFIG.LOADING]} />
           <Grid
             minHeight={"100vh"}
             // overflow="hidden"
-            width={"100vw"}
+            paddingX={"0.1rem"}
+            width="100vw"
             maxWidth={"100vw"}
             boxSizing="border-box"
-            container
+            container 
             flexDirection={"column"}
             onClick={(e) => {
               console.log("IN ROOT click!!");

@@ -9,6 +9,8 @@ import ImageCarousel from "./common/components/ImageCarousel";
 import RoomDetails from "./common/components/RoomDetails";
 import Temp2 from "./common/components/Temp2";
 import RoomList from "./common/pages/Rooms";
+import NewComponent from "./common/components/NewComponent";
+import FormDialog from "./common/components/FormDialog";
 const routes = [
   {
     path: "/",

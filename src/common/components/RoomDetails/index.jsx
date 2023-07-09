@@ -4,10 +4,14 @@ import Carousel from "react-material-ui-carousel";
 import RoomPic from "../../../assets/sample-room.jpeg";
 import RoomPic2 from "../../../assets/room2.jpeg";
 import IncrementButton from "../IncrementButton";
-import { useRecoilValue } from "recoil";
-import { roomSelect } from "../../../store";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { roomSelect, userStore } from "../../../store";
 import { RoomsJSON } from "../../constants";
 import { usePostCall } from "../../../services/loginService";
+import DialogGuest from "../DialogGuest";
+import FormDialog from "../FormDialog";
+import { useNavigate } from "react-router-dom";
+import { BOOKING, USER } from "../../../store/store.constant";
 const RoomDetails = () => {
   const imageURL = new URL(RoomPic, import.meta.url).href;
   const imageURL2 = new URL(RoomPic2, import.meta.url).href;
@@ -15,22 +19,33 @@ const RoomDetails = () => {
   const postCall = usePostCall();
   const [adultCount, setAdultCount] = useState(0);
   const [childCount, setChildCount] = useState(0);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [showGuestDialog, setShowGuestDialog] = useState(false);
   const maxChildCount = 3;
   const minChildCount = 1;
   const minAdultCount = 1;
   const maxAdultCount = 2;
   const roomDetails = useRecoilValue(roomSelect);
+  const userDetails = useRecoilValue(userStore);
+  const setUserDetails = useSetRecoilState(userStore);
+  const navigate = useNavigate();
   console.log(roomDetails);
-  const amount=roomDetails["selectedRoom"].price
+  const amount = roomDetails["selectedRoom"].price;
   console.log(roomDetails);
+
   const checkValidAdultChildCount = () => {
     if (adultCount <= maxAdultCount && childCount <= maxChildCount) {
       //Api Call's
       const orderCreate =
         "https://hotel-booking-api-they.onrender.com/api/v1/payment/order/create";
       postCall(orderCreate, {
-        amount: amount*1.18
+        amount: amount * 1.18,
       }).then((data) => {
+        setUserDetails((user) => ({
+          ...user,
+          ...data.data.data,
+          amountInRupees: amount * 1.18,
+        }));
         const id = data.data.data.id;
         const amountinPaise = data.data.data.amount;
         console.log(data.data.data);
@@ -42,14 +57,21 @@ const RoomDetails = () => {
           name: "Hotel Booking.",
           description: "Test Transaction room",
           order_id: id,
+          // redirect: true,
           handler: async function (responseRazorPay) {
             const data = {
-              response: {...responseRazorPay}
+              response: { ...responseRazorPay },
             };
-            const verifyAPI="https://hotel-booking-api-they.onrender.com/api/v1/payment/order/verify";
-            postCall(verifyAPI, responseRazorPay);
+            setUserDetails((user) => ({ ...user, ...responseRazorPay }));
+            const verifyAPI =
+              "https://hotel-booking-api-they.onrender.com/api/v1/payment/order/verify";
+            const verifyTransaction=(await postCall(verifyAPI, data)).data;
+            console.log(verifyTransaction);
+            if(verifyTransaction.code==200){
+              bookingConfirmationCall(true);
+            }
             console.log(data);
-            console.log(response);
+            console.log(responseRazorPay);
           },
           prefill: {
             name: "Hotel Booking",
@@ -65,11 +87,60 @@ const RoomDetails = () => {
         };
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
+        paymentObject.on("payment.failed", (response) => {
+          console.log("IN FAilure",response);
+        });
       });
     }
   };
+  const checkLoginOrGuest = () => {
+    if (Object.keys(userDetails).length > 0) {
+      console.log(userDetails);
+      setShowLoginDialog(false);
+      checkValidAdultChildCount();
+    } else {
+      setShowLoginDialog(true);
+    }
+  };
+  const checkGuestDialog = (isShown) => {
+    setShowGuestDialog(isShown);
+  };
+  const onSubmitGuestDetails = () => {
+    checkGuestDialog(false);
+    setShowLoginDialog(false);
+    checkValidAdultChildCount();
+  };
+  const handleGuestButton = () => {
+    checkGuestDialog(true);
+  };
+  const bookingConfirmationCall = (isPaymentSuccess) => {
+    return postCall(
+      "https://hotel-booking-api-they.onrender.com/api/v1/booking",
+      {
+        bookingId: userDetails[BOOKING.BOOKING_ID],
+        razorpayOrderId: userDetails[BOOKING.RAZOR_PAYMENT_ID]??'',
+        amount: amount,
+        firstName: userDetails[USER.FIRST_NAME],
+        lastName: userDetails[USER.LAST_NAME],
+        email: userDetails[USER.EMAIL],
+        bookingStatus: isPaymentSuccess,
+      }
+    );
+  };
   return (
     <Grid container display={"flex"}>
+      {showLoginDialog && (
+        <DialogGuest
+          onGuestAction={handleGuestButton}
+          onLoginAction={() => {
+            console.log(
+              ">>>>>>>>>>>>>>>>>>>>>LOGIN>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+            );
+            navigate("/login");
+          }}
+        />
+      )}
+      {showGuestDialog && <FormDialog onSubmit={onSubmitGuestDetails} />}
       <Grid item xs={12} sm={4} pt={2}>
         <Carousel indicators={false} animation={"slide"} interval={2000}>
           {imageList.map((image) => {
@@ -139,25 +210,32 @@ const RoomDetails = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid mt={2} item display={"flex"} justifyContent="space-between" xs={12} >
+          <Grid
+            mt={2}
+            item
+            display={"flex"}
+            justifyContent="space-between"
+            xs={12}
+          >
             <Typography>Sub Total: </Typography>
             <Typography>{amount}</Typography>
-            </Grid>
-            <Grid item display={"flex"} justifyContent="space-between" xs={12} >
+          </Grid>
+          <Grid item display={"flex"} justifyContent="space-between" xs={12}>
             <Typography> Tax: </Typography>
-            <Typography fontSize={14}>(+) {amount*0.18}</Typography>
-            </Grid>
-            <Grid item display={"flex"} justifyContent="space-between" xs={12} >
+            <Typography fontSize={14}>(+) {amount * 0.18}</Typography>
+          </Grid>
+          <Grid item display={"flex"} justifyContent="space-between" xs={12}>
             <Typography> Total Amount: </Typography>
             <Typography>{amount * 1.18}</Typography>
-            </Grid>
+          </Grid>
           <Grid item my={2}>
             <Button
               disabled={
                 !(minChildCount <= childCount || minAdultCount <= adultCount)
               }
               onClick={() => {
-                checkValidAdultChildCount();
+                // checkValidAdultChildCount();
+                checkLoginOrGuest();
               }}
               variant="contained"
               sx={{ textTransform: "capitalize" }}

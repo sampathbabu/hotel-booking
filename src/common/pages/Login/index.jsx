@@ -50,7 +50,8 @@ const Login = () => {
                   "user",
                   JSON.stringify({ ...success.data })
                 );
-                navigate("/")
+                
+                navigate(-1)
               });
             }}
             inputs={{
